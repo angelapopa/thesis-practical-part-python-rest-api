@@ -1,1 +1,1 @@
-web: gunicorn estimate-rating:estimate-rating
+web: gunicorn estimate-rating:app
