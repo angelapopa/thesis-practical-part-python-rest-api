@@ -2,7 +2,6 @@ import flask
 from flask import request, jsonify
 
 app = flask.Flask(__name__)
-print(__name__)
 app.config["DEBUG"] = True
 
 
@@ -35,6 +34,3 @@ def api_estimate():
 @app.errorhandler(404)
 def page_not_found(e):
     return "<h1>404</h1><p>The resource could not be found.</p>", 404
-
-
-app.run()

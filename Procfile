@@ -1,1 +1,1 @@
-web: gunicorn estimate-rating:app
+web: gunicorn wsgi:app
