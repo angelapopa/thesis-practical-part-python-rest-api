@@ -8,7 +8,7 @@ app.config["DEBUG"] = True
 # with default arguments in order to allow CORS for all domains on all routes
 # CORS(app)
 cors = CORS(app, resources={
-            r"/api/*": {"origins": {"https://epc-modelling-app.herokuapp.com/", "http://localhost:3000"}}})
+            r"/api/*": {"origins": {"https://epc-modelling-app.herokuapp.com", "http://localhost:3000"}}})
 
 
 @ app.route('/api/estimate', methods=['GET'])
