@@ -36,7 +36,7 @@ def api_estimate():
     parentDirPath = os.path.split(os.path.split(os.path.abspath(__file__))[
         0])[0]
     filepath = os.path.join(
-        parentDirPath, "trained_models\\knn\\england\\" + filename)
+        parentDirPath, "trained_models" + os.path.sep + "knn" + os.path.sep + "england" + os.path.sep + filename)
     print("Importing " + filepath)
 
     loaded_model = joblib.load(filepath)
@@ -55,7 +55,7 @@ def api_estimate():
 
     filename2 = "serialized_joblib_scaler_england.pck"
     filepath2 = os.path.join(
-        parentDirPath, "trained_models\\knn\\england\\" + filename2)
+        parentDirPath, "trained_models" + os.path.sep + "knn" + os.path.sep + "england" + os.path.sep + filename2)
     scaler = joblib.load(filepath2)
     new_X = scaler.transform(new_X)
 
