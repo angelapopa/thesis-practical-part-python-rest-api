@@ -2,6 +2,11 @@ import flask
 from flask import request, jsonify
 from flask_cors import CORS
 
+import joblib
+import os
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
@@ -25,16 +30,45 @@ def api_estimate():
     else:
         return "Error: No total_energy field provided. Please specify a total_energy."
 
-    # some test data
-    estimated_data = [
-        {'id': 0,
-         'rating': 'C',
-         'neighbours': 'no neighbours yet',
-         'input_floor_area': floor_area,
-         'input_total_energy': total_energy}, {'id': 1, 'somestuff': 5}
-    ]
-    print(estimated_data)
-    return jsonify(estimated_data)
+    # joblib - load model from file
+    filename = "serialized_joblib_model_england.pck"
+
+    parentDirPath = os.path.split(os.path.split(os.path.abspath(__file__))[
+        0])[0]
+    filepath = os.path.join(
+        parentDirPath, "trained_models\\knn\\england\\" + filename)
+    print("Importing " + filepath)
+
+    loaded_model = joblib.load(filepath)
+
+    new_data_rows = [[floor_area, total_energy]]
+    print("["+str(floor_area) + ", " + str(total_energy) + "]")
+
+    new_data_df = pd.DataFrame(
+        new_data_rows, columns=['ratedDwelling_spatialData_totalFloorArea_value', 'ratedDwelling_thermalData_finalEnergyDemand_value'])
+    print(new_data_df.head())
+
+    new_X = new_data_df
+
+    print("the dwelling that should be rated is:")
+    print(new_X)
+
+    filename2 = "serialized_joblib_scaler_england.pck"
+    filepath2 = os.path.join(
+        parentDirPath, "trained_models\\knn\\england\\" + filename2)
+    scaler = joblib.load(filepath2)
+    new_X = scaler.transform(new_X)
+
+    # result_load = loaded_model.score(X_test, y_test)
+    # print("accuracy score from loaded model")
+    # print(result_load)
+
+    new_pred = loaded_model.predict(new_X)
+    print("new prediction")
+    print(new_pred)
+
+    return jsonify(new_pred[0])
+# return jsonify(estimated_data)
 
 
 @ app.errorhandler(404)
