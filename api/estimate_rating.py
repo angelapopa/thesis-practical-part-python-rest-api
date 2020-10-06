@@ -7,6 +7,8 @@ import os
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 
+from .estimate_rating_exception import EstimateRatingException
+
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
 
@@ -19,27 +21,41 @@ cors = CORS(app, resources={
 @ app.route('/api/estimate', methods=['GET'])
 def api_estimate():
     print("we entered the estimate method.")
-    # Check if floor_area and total_energy were provided as part of the URL.
+    # Check if needed params were provided as part of the URL.
+    if 'country' in request.args:
+        country = request.args['country'].lower()
+    else:
+        return jsonify("No country field provided. Please specify a country.")
+
     if 'floor_area' in request.args:
         floor_area = int(request.args['floor_area'])
     else:
-        return "Error: No floor_area field provided. Please specify a floor_area."
+        return jsonify("No floor_area field provided. Please specify a floor_area.")
 
     if 'total_energy' in request.args:
         total_energy = int(request.args['total_energy'])
     else:
-        return "Error: No total_energy field provided. Please specify a total_energy."
+        return jsonify("No total_energy field provided. Please specify a total_energy.")
 
     # joblib - load model from file
-    filename = "serialized_joblib_model_england.pck"
+    filename = "serialized_joblib_model_" + country + ".pck"
 
     parentDirPath = os.path.split(os.path.split(os.path.abspath(__file__))[
         0])[0]
     filepath = os.path.join(
-        parentDirPath, "trained_models" + os.path.sep + "knn" + os.path.sep + "england" + os.path.sep + filename)
+        parentDirPath, "trained_models" + os.path.sep + "knn" + os.path.sep + country + os.path.sep + filename)
     print("Importing " + filepath)
 
-    loaded_model = joblib.load(filepath)
+    try:
+        loaded_model = joblib.load(filepath)
+    except FileNotFoundError:
+        ex = EstimateRatingException(
+            "No trained model was found for " + country.capitalize() + "!")
+        # throwing exception is not working well when needing the message out of the exception
+        # raise ex
+        return jsonify(ex.message)
+    except:
+        return jsonify("Something else went wrong")
 
     new_data_rows = [[floor_area, total_energy]]
     print("["+str(floor_area) + ", " + str(total_energy) + "]")
@@ -53,10 +69,16 @@ def api_estimate():
     print("the dwelling that should be rated is:")
     print(new_X)
 
-    filename2 = "serialized_joblib_scaler_england.pck"
+    filename2 = "serialized_joblib_scaler_" + country + ".pck"
     filepath2 = os.path.join(
-        parentDirPath, "trained_models" + os.path.sep + "knn" + os.path.sep + "england" + os.path.sep + filename2)
-    scaler = joblib.load(filepath2)
+        parentDirPath, "trained_models" + os.path.sep + "knn" + os.path.sep + country + os.path.sep + filename2)
+
+    try:
+        scaler = joblib.load(filepath2)
+    except FileNotFoundError:
+        raise EstimateRatingException(
+            "Error: No saved scaler was found for " + country + "!")
+
     new_X = scaler.transform(new_X)
 
     # result_load = loaded_model.score(X_test, y_test)
