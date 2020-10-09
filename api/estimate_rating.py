@@ -6,6 +6,7 @@ import joblib
 import os
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import RadiusNeighborsClassifier
 
 from .estimate_rating_exception import EstimateRatingException
 
@@ -18,9 +19,9 @@ cors = CORS(app, resources={
             r"/api/*": {"origins": {"https://epc-modelling-app.herokuapp.com", "http://localhost:3000"}}})
 
 
-@ app.route('/api/estimate', methods=['GET'])
-def api_estimate():
-    print("we entered the estimate method.")
+@ app.route('/api/estimate-rating', methods=['GET'])
+def api_estimate_rating():
+    print("we entered the estimate rating method.")
     # Check if needed params were provided as part of the URL.
     if 'country' in request.args:
         country = request.args['country'].lower()
@@ -37,25 +38,39 @@ def api_estimate():
     else:
         return jsonify("No total_energy field provided. Please specify a total_energy.")
 
-    # joblib - load model from file
-    filename = "serialized_joblib_model_" + country + ".pck"
+    # load classifier from file
+    filename = "serialized_radius_classifier_" + country + ".pck"
 
     parentDirPath = os.path.split(os.path.split(os.path.abspath(__file__))[
         0])[0]
     filepath = os.path.join(
-        parentDirPath, "trained_models" + os.path.sep + "knn" + os.path.sep + country + os.path.sep + filename)
+        parentDirPath, "trained_models", "knn", country, filename)
     print("Importing " + filepath)
 
     try:
-        loaded_model = joblib.load(filepath)
+        radius_classifier = joblib.load(filepath)
     except FileNotFoundError:
         ex = EstimateRatingException(
-            "No trained model was found for " + country.capitalize() + "!")
+            "No trained classifier was found for " + country.capitalize() + "!")
         # throwing exception is not working well when needing the message out of the exception
         # raise ex
         return jsonify(ex.message)
     except:
         return jsonify("Something else went wrong")
+
+    # load scaler from file
+    filename2 = "serialized_radius_scaler_" + country + ".pck"
+    filepath2 = os.path.join(
+        parentDirPath, "trained_models", "knn", country, filename2)
+
+    try:
+        radius_scaler = joblib.load(filepath2)
+    except FileNotFoundError:
+        ex = EstimateRatingException(
+            "No Scaler was found for " + country.capitalize() + "!")
+        # throwing exception is not working well when needing the message out of the exception
+        # raise ex
+        return jsonify(ex.message)
 
     new_data_rows = [[floor_area, total_energy]]
     print("["+str(floor_area) + ", " + str(total_energy) + "]")
@@ -69,28 +84,53 @@ def api_estimate():
     print("the dwelling that should be rated is:")
     print(new_X)
 
-    filename2 = "serialized_joblib_scaler_" + country + ".pck"
+    new_X = radius_scaler.transform(new_X)
+
+    y_pred_radius_for_one = radius_classifier.predict(new_X)
+
+    print("radius prediction for one")
+    print(y_pred_radius_for_one)
+
+    radius_neighbors = radius_classifier.radius_neighbors(X=new_X, return_distance=True,
+                                                          sort_results=True)
+
+    print("radius neighbors")
+    print("The closest neighbors are ([distance, row_index])")
+    print(radius_neighbors)
+
+    # load original df from file
+    filename2 = "serialized_radius_dataframe_" + country + ".pck"
     filepath2 = os.path.join(
-        parentDirPath, "trained_models" + os.path.sep + "knn" + os.path.sep + country + os.path.sep + filename2)
+        parentDirPath, "trained_models", "knn", country, filename2)
 
     try:
-        scaler = joblib.load(filepath2)
+        radius_dataframe = joblib.load(filepath2)
     except FileNotFoundError:
-        raise EstimateRatingException(
-            "Error: No saved scaler was found for " + country + "!")
+        ex = EstimateRatingException(
+            "No Serialized dataframe was found for " + country.capitalize() + "!")
+        # throwing exception is not working well when needing the message out of the exception
+        # raise ex
+        return jsonify(ex.message)
 
-    new_X = scaler.transform(new_X)
+    neigbors = []
+    # radius_dataframe is the data from DB saved in a file :(
+    for i in range(0, 3):
+        #print("row_index of the original df")
+        # print(radius_neighbors[1][0][i])
+        #print(radius_dataframe.iloc[radius_neighbors[1][0][i], :])
 
-    # result_load = loaded_model.score(X_test, y_test)
-    # print("accuracy score from loaded model")
-    # print(result_load)
+        # extract each field
+        element = {}
+        element['rating'] = radius_dataframe.iloc[radius_neighbors[1][0][i], 1]
+        element['totalFloorArea'] = radius_dataframe.iloc[radius_neighbors[1][0][i], 2]
+        element['finalEnergyDemand'] = radius_dataframe.iloc[radius_neighbors[1][0][i], 3]
+        neigbors.append(element)
 
-    new_pred = loaded_model.predict(new_X)
-    print("new prediction")
-    print(new_pred)
+    result = {}
+    result['estimated-rating'] = y_pred_radius_for_one[0]
+    result['neighbors'] = neigbors
 
-    return jsonify(new_pred[0])
-# return jsonify(estimated_data)
+    return jsonify(result)
 
 
 @ app.errorhandler(404)
