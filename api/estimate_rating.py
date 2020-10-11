@@ -113,8 +113,10 @@ def api_estimate_rating():
         return jsonify(ex.message)
 
     neigbors = []
+    nr_of_neighbours = 5
+
     # radius_dataframe is the data from DB saved in a file :(
-    for i in range(0, 3):
+    for i in range(0, nr_of_neighbours):
         #print("row_index of the original df")
         # print(radius_neighbors[1][0][i])
         #print(radius_dataframe.iloc[radius_neighbors[1][0][i], :])
