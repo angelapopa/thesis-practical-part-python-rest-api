@@ -23,6 +23,11 @@ cors = CORS(app, resources={
 def api_estimate_rating():
     print("we entered the estimate rating method.")
     # Check if needed params were provided as part of the URL.
+    if 'energy_prop' in request.args:
+        totalEnergyFieldName = request.args['energy_prop']
+    else:
+        return jsonify("No energy field name was provided. Please specify the name of the energy field.")
+
     if 'country' in request.args:
         country = request.args['country'].lower()
     else:
@@ -75,8 +80,11 @@ def api_estimate_rating():
     new_data_rows = [[floor_area, total_energy]]
     print("["+str(floor_area) + ", " + str(total_energy) + "]")
 
+    # energy db column name
+    columnEnergy = 'ratedDwelling_thermalData_' + totalEnergyFieldName + '_value'
+
     new_data_df = pd.DataFrame(
-        new_data_rows, columns=['ratedDwelling_spatialData_totalFloorArea_value', 'ratedDwelling_thermalData_finalEnergyDemand_value'])
+        new_data_rows, columns=['ratedDwelling_spatialData_totalFloorArea_value', columnEnergy])
     print(new_data_df.head())
 
     new_X = new_data_df
