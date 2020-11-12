@@ -34,12 +34,12 @@ def api_estimate_rating():
         return jsonify("No country field provided. Please specify a country.")
 
     if 'floor_area' in request.args:
-        floor_area = int(request.args['floor_area'])
+        floor_area = int(float(request.args['floor_area']))
     else:
         return jsonify("No floor_area field provided. Please specify a floor_area.")
 
     if 'total_energy' in request.args:
-        total_energy = int(request.args['total_energy'])
+        total_energy = int(float(request.args['total_energy']))
     else:
         return jsonify("No total_energy field provided. Please specify a total_energy.")
 
@@ -125,9 +125,9 @@ def api_estimate_rating():
 
     # radius_dataframe is the data from DB saved in a file :(
     for i in range(0, nr_of_neighbours):
-        #print("row_index of the original df")
+        # print("row_index of the original df")
         # print(radius_neighbors[1][0][i])
-        #print(radius_dataframe.iloc[radius_neighbors[1][0][i], :])
+        # print(radius_dataframe.iloc[radius_neighbors[1][0][i], :])
 
         # extract each field
         element = {}
