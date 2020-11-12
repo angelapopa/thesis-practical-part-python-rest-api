@@ -132,8 +132,10 @@ def api_estimate_rating():
         # extract each field
         element = {}
         element['rating'] = radius_dataframe.iloc[radius_neighbors[1][0][i], 1]
-        element['totalFloorArea'] = radius_dataframe.iloc[radius_neighbors[1][0][i], 2]
-        element['finalEnergyDemand'] = radius_dataframe.iloc[radius_neighbors[1][0][i], 3]
+        element['totalFloorArea'] = str(
+            radius_dataframe.iloc[radius_neighbors[1][0][i], 2])
+        element['finalEnergyDemand'] = str(
+            radius_dataframe.iloc[radius_neighbors[1][0][i], 3])
         neigbors.append(element)
 
     result = {}
