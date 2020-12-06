@@ -1,6 +1,11 @@
 Rest API for estimating the energy performance rating of a dwelling.
 
-Example call:
-/api/estimate?floor_area=97&total_energy=567
+REST API:
 
-https://epc-modelling-estimate-rating.herokuapp.com/api/estimate-rating?country=England&floor_area=232&total_energy=3743
+```
+/api/estimate-rating?energy_prop=<value>&country=<value>&floor_area=<value>&total_energy=<value>
+```
+
+Example:
+
+https://epc-modelling-estimate-rating.herokuapp.com/api/estimate-rating?energy_prop=finalEnergyDemand&country=England&floor_area=232&total_energy=369
