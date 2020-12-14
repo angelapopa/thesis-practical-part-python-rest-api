@@ -9,3 +9,7 @@ REST API:
 Example:
 
 https://epc-modelling-estimate-rating.herokuapp.com/api/estimate-rating?energy_prop=finalEnergyDemand&country=England&floor_area=232&total_energy=369
+
+
+
+Copyright (c) 2020 angelapopa
