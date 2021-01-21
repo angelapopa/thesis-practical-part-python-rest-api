@@ -1,0 +1,60 @@
+PS E:\docs\Uni Innsbruck\Masterthesis\GitHub_Project\thesis_practical_part_python> & C:/Users/popaa/AppData/Local/Programs/Python/Python38/python.exe "e:/docs/Uni Innsbruck/Masterthesis/GitHub_Project/thesis_practical_part_python/thesis-practical-part-python/src/at/uibk/epc/classifying/knn/classifying_and_saving_radius_models_england.py"
+EPC.EPC_England
+759460 documents aka buildings
+                                                     count       mean         std     min    25%    50%    75%     max
+ratedDwelling_spatialData_totalFloorArea_value     99999.0   85.01113   44.624634     4.0   61.0   78.0   96.0  2750.0
+ratedDwelling_thermalData_finalEnergyDemand_value  99999.0  285.01021  139.366003 -1008.0  201.0  261.0  341.0  5843.0
+                        _id awardedRating_ratingLevel  ratedDwelling_spatialData_totalFloorArea_value  ratedDwelling_thermalData_finalEnergyDemand_value
+0  5fac17f75d277709746d0b0d                         F                                              64                                                536
+1  5fac17f75d277709746d0b0e                         E                                              73                                                428
+2  5fac17f75d277709746d0b0f                         E                                              57                                                378
+3  5fac17f75d277709746d0b10                         D                                             106                                                238
+4  5fac17f75d277709746d0b11                         D                                              66                                                329
+nr. of elements considered:
+99999
+   ratedDwelling_spatialData_totalFloorArea_value  ratedDwelling_thermalData_finalEnergyDemand_value
+0                                              64                                                536
+1                                              73                                                428
+2                                              57                                                378
+3                                             106                                                238
+4                                              66                                                329
+  awardedRating_ratingLevel
+0                         F
+1                         E
+2                         E
+3                         D
+4                         D
+split done
+C:\Users\popaa\AppData\Local\Programs\Python\Python38\lib\site-packages\sklearn\neighbors\_classification.py:601: UserWarning: Outlier label Z is not in training classes. All class probabilities of outliers will be assigned with 0.
+  warnings.warn('Outlier label {} is not in training '
+radius prediction
+['C' 'C' 'D' ... 'D' 'C' 'C']
+Accuracy radius classifier
+[[  12   19    4    7    0    0    0    0]
+ [   3 1121  393   20    0    1    0    0]
+ [   0  390 3629 1187   21    1    0    1]
+ [   0   15 1273 6282  655   36    0    0]
+ [   0    0   51 1291 2146  188   12    0]
+ [   0    0   30  256  494  165   24    0]
+ [   0    0   16  138   64   38   17    0]
+ [   0    0    0    0    0    0    0    0]]
+C:\Users\popaa\AppData\Local\Programs\Python\Python38\lib\site-packages\sklearn\metrics\_classification.py:1245: UndefinedMetricWarning: Recall and F-score are ill-defined and being set to 0.0 in labels with no true samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+C:\Users\popaa\AppData\Local\Programs\Python\Python38\lib\site-packages\sklearn\metrics\_classification.py:1245: UndefinedMetricWarning: Recall and F-score are ill-defined and being set to 0.0 in labels with no true samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+C:\Users\popaa\AppData\Local\Programs\Python\Python38\lib\site-packages\sklearn\metrics\_classification.py:1245: UndefinedMetricWarning: Recall and F-score are ill-defined and being set to 0.0 in labels with no true samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+              precision    recall  f1-score   support
+
+           A       0.80      0.29      0.42        42
+           B       0.73      0.73      0.73      1538
+           C       0.67      0.69      0.68      5229
+           D       0.68      0.76      0.72      8261
+           E       0.63      0.58      0.61      3688
+           F       0.38      0.17      0.24       969
+           G       0.32      0.06      0.10       273
+           Z       0.00      0.00      0.00         0
+
+    accuracy                           0.67     20000
+   macro avg       0.53      0.41      0.44     20000
+weighted avg       0.66      0.67      0.66     20000

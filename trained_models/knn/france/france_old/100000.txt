@@ -1,0 +1,69 @@
+
+
+
+
+Windows PowerShell
+Copyright (C) Microsoft Corporation. Alle Rechte vorbehalten.
+
+Lernen Sie das neue plattformübergreifende PowerShell kennen – https://aka.ms/pscore6
+
+PS E:\docs\Uni Innsbruck\Masterthesis\GitHub_Project\thesis_practical_part_python> & C:/Users/popaa/AppData/Local/Programs/Python/Python38/python.exe "e:/docs/Uni Innsbruck/Masterthesis/GitHub_Project/thesis_practical_part_python/thesis-practical-part-python/src/at/uibk/epc/classifying/knn/classifying_and_saving_radius_models_france.py"
+EPC.EPC_France
+368421 documents aka buildings
+                                                      count        mean          std   min    25%    50%    75%       max
+ratedDwelling_spatialData_totalFloorArea_value      99999.0   87.768208    57.327287   1.0   56.0   80.0  109.0    7660.0
+ratedDwelling_thermalData_finalEnergyConsumptio...  99999.0  248.289453  1117.145436 -56.0  167.0  225.0  301.0  351476.0
+                        _id awardedRating_ratingLevel  ratedDwelling_spatialData_totalFloorArea_value  ratedDwelling_thermalData_finalEnergyConsumption_value
+0  5faf8f78a106336b49099187                         D                                              85                                                166     
+1  5faf8f79a106336b49099188                         C                                              90                                                114     
+2  5faf8f79a106336b49099189                         E                                              97                                                254     
+3  5faf8f79a106336b4909918a                         G                                              64                                                468     
+4  5faf8f79a106336b4909918b                         F                                              89                                                384     
+nr. of elements considered: 
+99999
+   ratedDwelling_spatialData_totalFloorArea_value  ratedDwelling_thermalData_finalEnergyConsumption_value
+0                                              85                                                166     
+1                                              90                                                114     
+2                                              97                                                254     
+3                                              64                                                468     
+4                                              89                                                384     
+  awardedRating_ratingLevel
+0                         D
+1                         C
+2                         E
+3                         G
+4                         F
+split done
+C:\Users\popaa\AppData\Local\Programs\Python\Python38\lib\site-packages\sklearn\neighbors\_classification.py:601: UserWarning: Outlier label Z is not in training classes. All class probabilities of outliers will be assigned with 0.
+  warnings.warn('Outlier label {} is not in training '
+radius prediction
+['B' 'D' 'C' ... 'C' 'E' 'F']
+Accuracy radius classifier
+[[  76    2   19   66    4    0    0    0]
+ [   2  368  108   53    0    0    0    1]
+ [   0    6 3069   50    3    2    0    0]
+ [   0    1   29 6975   24    1    0    0]
+ [   0    0    5   74 5711    5    0    0]
+ [   0    0    1   21   99 2307    1    0]
+ [   0    0    0   95  120   58  644    0]
+ [   0    0    0    0    0    0    0    0]]
+C:\Users\popaa\AppData\Local\Programs\Python\Python38\lib\site-packages\sklearn\metrics\_classification.py:1245: UndefinedMetricWarning: Recall and F-score are ill-defined and being set to 0.0 in labels with no true samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+C:\Users\popaa\AppData\Local\Programs\Python\Python38\lib\site-packages\sklearn\metrics\_classification.py:1245: UndefinedMetricWarning: Recall and F-score are ill-defined and being set to 0.0 in labels with no true samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+C:\Users\popaa\AppData\Local\Programs\Python\Python38\lib\site-packages\sklearn\metrics\_classification.py:1245: UndefinedMetricWarning: Recall and F-score are ill-defined and being set to 0.0 in labels with no true samples. Use `zero_division` parameter to control this behavior.
+  _warn_prf(average, modifier, msg_start, len(result))
+              precision    recall  f1-score   support
+
+           A       0.97      0.46      0.62       167
+           B       0.98      0.69      0.81       532
+           C       0.95      0.98      0.96      3130
+           D       0.95      0.99      0.97      7030
+           E       0.96      0.99      0.97      5795
+           F       0.97      0.95      0.96      2429
+           G       1.00      0.70      0.82       917
+           Z       0.00      0.00      0.00         0
+
+    accuracy                           0.96     20000
+   macro avg       0.85      0.72      0.77     20000
+weighted avg       0.96      0.96      0.96     20000

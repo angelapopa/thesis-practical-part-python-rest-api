@@ -1,0 +1,50 @@
+PS E:\docs\Uni Innsbruck\Masterthesis\GitHub_Project\thesis_practical_part_python> & C:/Users/popaa/AppData/Local/Programs/Python/Python38/python.exe "e:/docs/Uni Innsbruck/Masterthesis/GitHub_Project/thesis_practical_part_python/thesis-practical-part-python/src/at/uibk/epc/classifying/knn/classifying_and_saving_radius_models_france.py"
+EPC.EPC_France
+368127 documents aka buildings
+                                                      count        mean          std   min    25%    50%    75%       max
+ratedDwelling_spatialData_totalFloorArea_value      99999.0   87.798488    57.328012   1.0   56.0   80.0  109.0    7660.0
+ratedDwelling_thermalData_finalEnergyConsumptio...  99999.0  248.635116  1117.114748 -56.0  167.0  225.0  301.0  351476.0
+                        _id awardedRating_ratingLevel  ratedDwelling_spatialData_totalFloorArea_value  ratedDwelling_thermalData_finalEnergyConsumption_value
+0  5faf8f78a106336b49099187                         D                                              85                                                166
+1  5faf8f79a106336b49099188                         C                                              90                                                114
+2  5faf8f79a106336b49099189                         E                                              97                                                254
+3  5faf8f79a106336b4909918a                         G                                              64                                                468
+4  5faf8f79a106336b4909918b                         F                                              89                                                384
+nr. of elements considered:
+99999
+   ratedDwelling_spatialData_totalFloorArea_value  ratedDwelling_thermalData_finalEnergyConsumption_value
+0                                              85                                                166
+1                                              90                                                114
+2                                              97                                                254
+3                                              64                                                468
+4                                              89                                                384
+  awardedRating_ratingLevel
+0                         D
+1                         C
+2                         E
+3                         G
+4                         F
+split done
+radius prediction
+['C' 'F' 'C' ... 'D' 'D' 'F']
+Accuracy radius classifier
+[[  58    4   14   47    4    0    0]
+ [   4  372  132   44    6    0    0]
+ [   0   12 2989   68    4    0    0]
+ [   0    0   33 6981   16    0    0]
+ [   0    1    5   76 5692    6    0]
+ [   0    0    1   16   94 2353    0]
+ [   0    0    0   98  116   55  699]]
+              precision    recall  f1-score   support
+
+           A       0.94      0.46      0.61       127
+           B       0.96      0.67      0.79       558
+           C       0.94      0.97      0.96      3073
+           D       0.95      0.99      0.97      7030
+           E       0.96      0.98      0.97      5780
+           F       0.97      0.95      0.96      2464
+           G       1.00      0.72      0.84       968
+
+    accuracy                           0.96     20000
+   macro avg       0.96      0.82      0.87     20000
+weighted avg       0.96      0.96      0.95     20000
